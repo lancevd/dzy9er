@@ -1,0 +1,36 @@
+import {
+  isBypassRoutes,
+  isProtectedRoutes,
+  isPublicRoutes,
+} from "@/lib/permissions";
+import {
+  convexAuthNextjsMiddleware,
+  createRouteMatcher,
+  nextjsMiddlewareRedirect,
+} from "@convex-dev/auth/nextjs/server";
+
+const BypassMatcher = createRouteMatcher(isBypassRoutes);
+const PublicMatcher = createRouteMatcher(isPublicRoutes);
+const ProtectedMatcher = createRouteMatcher(isProtectedRoutes);
+
+export default convexAuthNextjsMiddleware((request, {convexAuth}) => {
+    if (BypassMatcher(request)) return
+    const authed = convexAuth.isAuthenticated()
+    if (PublicMatcher(request) && authed) {
+      return nextjsMiddlewareRedirect(request, "/dashboard");
+    }
+    if (ProtectedMatcher(request) && !authed) {
+      return nextjsMiddlewareRedirect(request, "/auth/sign-in");
+}
+return
+ },{
+    cookieConfig: {
+        maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+    }
+ });
+
+export const config = {
+  // The following matcher runs middleware on all routes
+  // except static assets.
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+};
