@@ -25,7 +25,7 @@ export default convexAuthNextjsMiddleware((request, {convexAuth}) => {
 return
  },{
     cookieConfig: {
-        maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+        maxAge: 60 * 60 * 24 * 30, // 30 days
     }
  });
 
