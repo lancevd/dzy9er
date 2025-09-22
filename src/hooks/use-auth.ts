@@ -81,7 +81,7 @@ export const useAuth = () => {
     }
   };
 
-  const handleSignout = async () => {
+  const handleSignOut = async () => {
     try {
       await signOut();
       router.push("/auth/sign-in");
@@ -98,7 +98,7 @@ export const useAuth = () => {
     signUpForm,
     handleSignIn,
     handleSignUp,
-    handleSignout,
+    handleSignOut,
     loading,
     error,
   };

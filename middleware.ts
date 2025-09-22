@@ -13,9 +13,9 @@ const BypassMatcher = createRouteMatcher(isBypassRoutes);
 const PublicMatcher = createRouteMatcher(isPublicRoutes);
 const ProtectedMatcher = createRouteMatcher(isProtectedRoutes);
 
-export default convexAuthNextjsMiddleware((request, {convexAuth}) => {
+export default convexAuthNextjsMiddleware(async (request, {convexAuth}) => {
     if (BypassMatcher(request)) return
-    const authed = convexAuth.isAuthenticated()
+    const authed = await convexAuth.isAuthenticated()
     if (PublicMatcher(request) && authed) {
       return nextjsMiddlewareRedirect(request, "/dashboard");
     }
