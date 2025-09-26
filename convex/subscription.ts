@@ -12,7 +12,7 @@ export const hasEntitlement = query({
       const periodOk =
         sub.currentPeriodEnd == null || sub.currentPeriodEnd > now;
       if (status === "active" && periodOk) return true;
-      return false;
     }
+    return false;
   },
 });
